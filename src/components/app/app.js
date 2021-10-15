@@ -12,9 +12,9 @@ export default class App extends React.Component {
   maxId = 100;
   state = {
     todoData : [
-      { label: 'Drink Coffee', important: false, id: 1, done: false, important: false },
-      { label: 'Make Awesome App', important: true, id: 2, done: false, important: false  },
-      { label: 'Have a lunch', important: false, id: 3, done: false, important: false  }
+      { label: 'Drink Coffee', id: 1, done: false, important: false },
+      { label: 'Make Awesome App', id: 2, done: false, important: false  },
+      { label: 'Have a lunch', id: 3, done: false, important: false  }
     ],
   }
 
@@ -47,7 +47,7 @@ export default class App extends React.Component {
       const idx = todoData.findIndex((el) => el.id === id);
       const newData = todoData.slice();
       newData[idx].important = !newData[idx].important;
-      console.log(newData);
+      
       return {
         todoData: todoData
       }
