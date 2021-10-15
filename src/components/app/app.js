@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
@@ -13,10 +12,10 @@ export default class App extends React.Component {
   maxId = 100;
   state = {
     todoData : [
-      { label: 'Drink Coffee', important: false, id: 1 },
-      { label: 'Make Awesome App', important: true, id: 2 },
-      { label: 'Have a lunch', important: false, id: 3 }
-    ]
+      { label: 'Drink Coffee', important: false, id: 1, done: false, important: false },
+      { label: 'Make Awesome App', important: true, id: 2, done: false, important: false  },
+      { label: 'Have a lunch', important: false, id: 3, done: false, important: false  }
+    ],
   }
 
   deleteItem = (id) => {
@@ -31,13 +30,36 @@ export default class App extends React.Component {
     });
   };
 
+  onMarkDone = (id) => {
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+      const newData = todoData.slice();
+      newData[idx].done = !newData[idx].done;
+
+      return {
+        todoData: newData
+      }
+    });
+  }
+
+  onMarkImportant = (id) =>{
+    this.setState(({todoData}) => {
+      const idx = todoData.findIndex((el) => el.id === id);
+      const newData = todoData.slice();
+      newData[idx].important = !newData[idx].important;
+      console.log(newData);
+      return {
+        todoData: todoData
+      }
+    })
+  }
   
   addItem = (label) => {
     this.setState(({todoData}) => {
 
       const newData = [
         ...this.state.todoData, 
-        {label: label, important: false, id: this.maxId++}
+        {label: label, important: false, id: this.maxId++, done: false}
       ];
       
       return {
@@ -57,7 +79,13 @@ export default class App extends React.Component {
           <ItemStatusFilter />
         </div>
   
-        <TodoList todos={todoData}  onDeleted={this.deleteItem}/>
+        <TodoList 
+          todos={todoData}  
+          onDeleted={this.deleteItem} 
+          onMarkDone={this.onMarkDone}
+          onMarkImportant={this.onMarkImportant}
+        />
+
         <ItemAddForm addItem = {this.addItem}/>
       </div>
     );
